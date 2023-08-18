@@ -20,15 +20,19 @@ export default function Register(props) {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        auth.register( formValue.password, formValue.email).then((res) => {
+        auth.register(formValue.password, formValue.email)
+        .then((res) => {
+            console.log(res)
             setSucces(true);
             props.onNotify(true);
             setFormValue({
                 email: '',
                 password: ''
             })
-        }
-        );
+        })
+        .catch((err) => {
+            props.onNotify(true);
+        });
     }
     return (
     <div className='identification'>

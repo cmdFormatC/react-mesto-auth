@@ -20,7 +20,7 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [isNotificationPopupOpen, setNotificationPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
-  const [currentUser, setCurrentUser] = React.useState('');
+  const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('');
@@ -29,27 +29,35 @@ function App() {
 
   React.useEffect(() => {
     handleTokenCheck();
-    api.getUserInfo()
-    .then((result) => {
-      setCurrentUser(result)
-      api.getInitialCards()
-            .then((result) => {
-                const cardsArr = result.map((item) => {
-                    return {
-                        name: item["name"],
-                        link: item["link"],
-                        likes: item["likes"],
-                        ownerId: item["owner"]._id,
-                        _id: item["_id"]
-                    }
-                });
-                setCards(cardsArr);
-        })
-        .catch((error) => {
-            console.error(error); 
-        })
-    })
   }, [])
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      api.getUserInfo()
+      .then((result) => {
+        setCurrentUser(result)
+        api.getInitialCards()
+              .then((result) => {
+                  const cardsArr = result.map((item) => {
+                      return {
+                          name: item["name"],
+                          link: item["link"],
+                          likes: item["likes"],
+                          ownerId: item["owner"]._id,
+                          _id: item["_id"]
+                      }
+                  });
+                  setCards(cardsArr);
+          })
+          .catch((error) => {
+              console.error(error); 
+          })
+      })
+    }
+  }, [loggedIn])
+
+
+
 
   function signOut(){
     localStorage.removeItem('jwt');

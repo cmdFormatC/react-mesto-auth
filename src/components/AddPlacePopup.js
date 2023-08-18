@@ -5,7 +5,10 @@ import PopupWithForm from './PopupWithForm'
 export default function AddPlacePopup(props) {
     const [url, setUrl] = React.useState('');
     const [description, setDescription] = React.useState('');
-
+    React.useEffect(() =>{
+        setUrl('');
+        setDescription('');
+    }, [props.isOpen])
     function handleChangeUrl(e) {
         setUrl(e.target.value);
     }
@@ -19,8 +22,6 @@ export default function AddPlacePopup(props) {
             name: description,
             link: url
         })
-        setUrl('');
-        setDescription('');
     }
 
     return (

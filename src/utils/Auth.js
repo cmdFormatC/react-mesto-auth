@@ -9,6 +9,10 @@ export const register = (password, email) => {
     body: JSON.stringify({password, email})
   })
   .then((response) => {
+    console.log(response)
+    if (!response.ok) {
+      throw new Error("Bad Request");
+    }
     return response.json();
   })
   .then((res) => {
